@@ -1,0 +1,58 @@
+{
+  "version": 3,
+  "analysis_script": {
+    "location": "s3://gnw-monitoring-data/post2020.py",
+    "updatetime": "2026-08-04T00:00:00Z"
+  },
+  "zarrs": [
+    {
+      "name": "pixel_area_zarr",
+      "location": "s3://gnw-monitoring-data/zarrs/pixel.area.v1.zarr",
+      "description": "Area of each pixel in square meters",
+      "updatetime": "2026-07-08T00:00:00Z",
+      "hash": "3d90747de0e3ab08afd13a5cc99f1ed9b15dd67f9bb52c7c1254d2bb9cd00b7e"
+    },
+    {
+      "name": "tcl_zarr",
+      "location": "s3://gnw-monitoring-data/zarrs/tcl.year.v1.zarr",
+      "description": "TCL 2025 (umd_tree_cover_loss/v1.13, testing for tree cover loss 2021-2025)",
+      "updatetime": "2026-07-08T00:00:00Z",
+      "hash": "b2d79b18fd8ae44fb72dd131e09f13fd23d7d55859a47d63eba160757b632086"
+    },
+    {
+      "name": "sbtn_area_zarr",
+      "location": "s3://gnw-monitoring-data/zarrs/sbtn.area.v1.zarr",
+      "description": "SBTN 1.1 (sbtn_natural_forests_map/v202504, testing for natural forest only)",
+      "updatetime": "2026-07-08T00:00:00Z",
+      "hash": "54956d7cd03c38d91d303c39d02e0b16afa40fee0cbf272e74f880b3777f7728"
+    },
+    {
+      "name": "jrc_area_zarr",
+      "location": "s3://gnw-monitoring-data/zarrs/jrc.area.v1.zarr",
+      "description": "JRC 2020.3 (jrc_global_forest_cover/v2020.3)",
+      "updatetime": "2026-07-08T00:00:00Z",
+      "hash": "3bb8008efd877b320d2abb80eb1d8f38af21332fa3c5f29c28d7f7844419da38"
+    },
+    {
+      "name": "indig_area_zarr",
+      "location": "s3://gnw-private-monitoring-data/zarrs/indig.area.v2.zarr",
+      "description": "Landmark (landmark_ip_lc_and_indicative_poly/v20260617, indigenous and community lands)",
+      "updatetime": "2026-08-11T03:03:46Z",
+      "hash": "9bcb4a18960741b75a47241d6c17f9cd4916df2a928d8e8c4a43f9c0dbc14f49"
+    },
+    {
+      "name": "int_dist_zarr",
+      "location": "s3://gnw-monitoring-data/zarrs/intdist.date_conf.v20260802.zarr",
+      "description": "Integrated disturbance alerts (gfw_integrated_dist_alerts/v20260802,\ntesting for high and highest confidence alerts since 2026/1/1)",
+      "updatetime": "2026-08-04T21:46:16Z",
+      "hash": "db846ca54edec260f1d51705a288e8db6a759a93ae10b43417ed27ad4510b7e9"
+    },
+    {
+      "name": "tcl_drivers_zarr",
+      "location": "s3://gnw-monitoring-data/zarrs/tcl_drivers.categ.v1.zarr",
+      "description": "Drivers of Tree Cover Loss 2001-2025 (wri_google_tree_cover_loss_drivers/v1.13,\nresampled from 1km resolution)",
+      "updatetime": "2026-07-08T00:00:00Z",
+      "hash": "24a9989cdaebd843270d7b13c6ee4cf7f5f1cfe8d171c9aaacab56d59f2b1f23"
+    }
+  ]
+}
