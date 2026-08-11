@@ -15,3 +15,5 @@ documention also includes a full description of the other supported configuratio
 download the required datasets to your local environment for better reliability, greater
 scalability, and lower access costs.  The documentation also describes the helper scripts
 `check_updates.py` and `hash_zarr.py`.
+
+These scripts are published under an Apache 2.0 license.
