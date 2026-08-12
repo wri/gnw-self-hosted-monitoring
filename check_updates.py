@@ -1,3 +1,5 @@
+# Licensed under the Apache License, Version 2.0. See LICENSE in the repository root.
+#
 # For users who keep their own LOCAL copies of the zarrs (and the analysis script): lists
 # which zarrs -- and whether the analysis script itself -- need to be (re-)copied, based on
 # when each one's entry last changed in the manifest. The Landmark (indigenous/community)

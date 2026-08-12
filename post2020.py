@@ -1,3 +1,5 @@
+# Licensed under the Apache License, Version 2.0. See LICENSE in the repository root.
+#
 # To install:
 #  - Make sure python 3.12 or close to that is installed
 #  - Make sure "pipenv" is installed
