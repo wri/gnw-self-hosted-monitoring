@@ -1,3 +1,5 @@
+# Licensed under the Apache License, Version 2.0. See LICENSE in the repository root.
+#
 # Compute a lightweight integrity "fingerprint" of a zarr store (a folder / S3 prefix made
 # of many files), so a user who copies the zarr locally (or to their own bucket) can verify
 # they copied it correctly and completely.
