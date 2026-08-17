@@ -1,8 +1,9 @@
-# GNW Self-Hosted Monitoring
+# Global Nature Watch (GNW) Self-Hosted Monitoring
 
-The GNW Self-Hosted Monitoring System allows for running post-2020 deforestation risk
-assessment and disturbance-alert analyses on your local system, using datasets
-provided by GNW.
+The Global Nature Watch (GNW) Self-Hosted Monitoring System allows for running
+post-2020 deforestation risk assessment and disturbance-alert analyses on your local
+system, using datasets provided by GNW. More general information on GNW is available
+[here](https://www.globalnaturewatch.org/)
 
 For motivation and high-level description of the GNW Self-Hosted Monitoring System,
 visit [GNW Self-Hosted
