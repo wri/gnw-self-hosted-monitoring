@@ -145,6 +145,13 @@ def main() -> None:
                 print(f"Zarrs updated since {since.isoformat()} (copy these again):")
             for entry in updated:
                 print(f"  {entry['name']:<17}  {entry['location']:<62}  (updated {entry['updatetime']})")
+                # For an actual update (not the initial listing), also show the description:
+                # a zarr update usually changes it (dataset version/date), so it should be
+                # updated in the user's local manifest too. The initial copy comes straight
+                # from the public manifest, so its descriptions are already correct.
+                desc = entry.get("description", "")
+                if desc and not initial_run:
+                    print("      " + desc.replace("\n", "\n      "))
         if script is not None:
             if updated:
                 print("")
