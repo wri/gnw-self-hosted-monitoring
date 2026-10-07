@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "analysis_script": {
+    "location": "s3://gnw-monitoring-data/ghg.py",
+    "updatetime": "2026-08-11T00:00:00Z"
+  },
+  "zarrs": [
+    {
+      "name": "pixel_area_zarr",
+      "location": "s3://gnw-monitoring-data/zarrs/pixel.area.v1.zarr",
+      "description": "Area of each pixel in square meters",
+      "updatetime": "2026-07-08T00:00:00Z",
+      "hash": "3d90747de0e3ab08afd13a5cc99f1ed9b15dd67f9bb52c7c1254d2bb9cd00b7e"
+    },
+    {
+      "name": "filtered_tcl_zarr",
+      "location": "s3://gnw-monitoring-data/zarrs/filtered.tcl.year.v1.zarr",
+      "description": "Tree cover loss 2001-2025 (umd_tree_cover_loss/v1.13), pre-filtered for GHG emissions counting",
+      "updatetime": "2026-09-09T00:00:00Z",
+      "hash": "f1c8e98c0c95d1b0717ba1c2d33158cc1df3e2baa583dc5475c02e071081e634"	
+    },
+    {
+      "name": "forest_gross_emissions_co2",
+      "location": "s3://gnw-monitoring-data/zarrs/emissions.co2.MgCO2e_ha-1.v1.zarr",
+      "description": "CO2 emissions (gfw_forest_flux_full_extent_gross_emissions_co2_only_biomass_soil/v20260327, MgCO2e/ha)",
+      "updatetime": "2026-08-11T00:00:00Z",
+      "hash": "edeb66034a1a44789df61fa63c085c5ac47bacaa53fcd14048056216845614d2"	
+    },
+    {
+      "name": "forest_gross_emissions_ch4",
+      "location": "s3://gnw-monitoring-data/zarrs/emissions.ch4.MgCO2e_ha-1.v1.zarr",
+      "description": "CH4 emissions (gfw_forest_flux_full_extent_gross_emissions_ch4_only_biomass_soil/v20260327, MgCO2e/ha)",
+      "updatetime": "2026-08-11T00:00:00Z",
+      "hash": "c7bc51f62776f39130aca507915df43adae1fe7594935acea53ee962cf5dba55"	
+    },
+    {
+      "name": "forest_gross_emissions_n2o",
+      "location": "s3://gnw-monitoring-data/zarrs/emissions.n2o.MgCO2e_ha-1.v1.zarr",
+      "description": "N2O emissions (gfw_forest_flux_full_extent_gross_emissions_n2o_only_biomass_soil/v20260327, MgCO2e/ha)",
+      "updatetime": "2026-08-11T00:00:00Z",
+      "hash": "105efb93de8fcf7c7971f2b292360efa42466538f92a35459f8ed5bd76045220"	
+    }
+  ]
+}

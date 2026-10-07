@@ -1,6 +1,6 @@
 # Licensed under the Apache License, Version 2.0. See LICENSE in the repository root.
 #
-# For users who keep their own LOCAL copies of the zarrs (and the analysis script): lists
+# For users who keep their own LOCAL copies of the zarrs (and the analysis scripts): lists
 # which zarrs -- and whether the analysis script itself -- need to be (re-)copied, based on
 # when each one's entry last changed in the manifest. The Landmark (indigenous/community)
 # zarr is reported only if you can access the private folder that holds it (see the
@@ -17,23 +17,29 @@
 #  - Run 'pipenv install xarray shapely pandas fiona zarr fsspec s3fs rioxarray "dask[array,dataframe,distributed,diagnostics]" coiled'
 #
 # Usage:
-#    pipenv run python ./check_updates.py [-u] [date or date-time]
+#    pipenv run python ./check_updates.py [-s post2020|ghg] [-u] [date or date-time]
 #
-# Typical workflow:
-#  - Run `check_updates.py` the first time (no ./lastchecktime yet): it lists all the zarr
+# The -s option selects which analysis script's zarrs to check: "post2020" (the default, using
+# post2020-manifest.json and ./lastchecktime) or "ghg" (using ghg-manifest.json and
+# ./lastchecktime.ghg). The two scripts are tracked independently, so you can copy/update the
+# zarrs for one without affecting the other. The examples below all default to post2020; add
+# `-s ghg` to any of them to do the same for the GHG analysis instead.
+#
+# Typical workflow (for the selected script's last-check file):
+#  - Run `check_updates.py` the first time (no last-check file yet): it lists all the zarr
 #    names and current paths in the manifest -- the initial set of zarrs to copy to your
 #    local bucket.
 #  - When you are ready to copy them, run `check_updates.py -u`. This lists them again,
-#    prints the current time (UTC), and records it in ./lastchecktime. Copy over all the
+#    prints the current time (UTC), and records it in the last-check file. Copy over all the
 #    listed zarrs, update your local manifest.json, and point your local copy of the query
 #    script at that manifest.
 #  - Later, run `check_updates.py` any time to see only the zarrs whose paths changed since
-#    the time in ./lastchecktime. When you are ready to bring those updates local, run
-#    `check_updates.py -u` again to re-copy and advance ./lastchecktime to the current time.
+#    the time in the last-check file. When you are ready to bring those updates local, run
+#    `check_updates.py -u` again to re-copy and advance the last-check file to the current time.
 #
 # You can also supply a date or date-time on the command line (with or without -u) to use
-# as the last check-and-copy time instead of ./lastchecktime -- useful if ./lastchecktime
-# was accidentally removed or corrupted. All arguments are joined with spaces, so it need
+# as the last check-and-copy time instead of the last-check file -- useful if it was
+# accidentally removed or corrupted. All arguments are joined with spaces, so it need
 # not be quoted, and many formats are accepted, e.g.:
 #    pipenv run python ./check_updates.py 2026-06-15
 #    pipenv run python ./check_updates.py -u 2026-06-15 13:45
@@ -49,12 +55,21 @@ from datetime import datetime, timezone
 import fsspec
 from dateutil import parser as dateparser
 
-# Location of the global manifest that lists each zarr (name, S3 location, and the time
-# that location was made the current value for the zarr).
-manifest_uri = "s3://gnw-monitoring-data/post2020-manifest.json"
+# Location of the global manifest for each analysis script (each lists its zarrs by name, S3
+# location, and the time that location was made current). The -s option selects which one to
+# check (default post2020); see main(). The two scripts' zarr sets are tracked independently.
+manifest_uris = {
+    "post2020": "s3://gnw-monitoring-data/post2020-manifest.json",
+    "ghg": "s3://gnw-monitoring-data/ghg-manifest.json",
+}
+default_script = "post2020"
 
-# Local file that records the last time the user checked for and copied over updates.
-lastcheck_file = "./lastchecktime"
+# Local file that records the last time the user checked for and copied over updates -- one per
+# analysis script, so post2020 and ghg can be checked/copied on independent schedules.
+lastcheck_files = {
+    "post2020": "./lastchecktime",
+    "ghg": "./lastchecktime.ghg",
+}
 
 # Report the Landmark (indigenous/community) dataset only if this user can access the
 # private folder that holds it (users are granted a role on it if allowed). To force the
@@ -75,8 +90,8 @@ def parse_datetime(s: str) -> datetime:
     return dt.astimezone(timezone.utc)
 
 
-def read_lastcheck_str() -> str | None:
-    """Return the trimmed contents of ./lastchecktime, or None if missing/empty."""
+def read_lastcheck_str(lastcheck_file: str) -> str | None:
+    """Return the trimmed contents of the last-check file, or None if missing/empty."""
     if not os.path.exists(lastcheck_file):
         return None
     with open(lastcheck_file) as f:
@@ -107,15 +122,31 @@ def check_updates(manifest_uri: str, since: datetime) -> tuple[list[dict], dict 
 def main() -> None:
     args = sys.argv[1:]
     update = "-u" in args
-    # Anything that is not the -u flag is treated as the (space-joined) date/time.
-    date_tokens = [a for a in args if a != "-u"]
+    args = [a for a in args if a != "-u"]
+
+    # -s selects which analysis script's manifest and last-check file to use (post2020 or ghg);
+    # it defaults to post2020, so behavior without -s is unchanged.
+    script_name = default_script
+    if "-s" in args:
+        i = args.index("-s")
+        if i + 1 >= len(args):
+            sys.exit(f"Error: -s requires a value (one of: {', '.join(manifest_uris)}).")
+        script_name = args[i + 1]
+        del args[i:i + 2]
+        if script_name not in manifest_uris:
+            sys.exit(f"Error: -s must be one of {', '.join(manifest_uris)} (got '{script_name}').")
+    manifest_uri = manifest_uris[script_name]
+    lastcheck_file = lastcheck_files[script_name]
+
+    # Anything left over is treated as the (space-joined) date/time.
+    date_tokens = args
 
     if date_tokens:
-        # An explicit date/time on the command line overrides ./lastchecktime.
+        # An explicit date/time on the command line overrides the last-check file.
         source: str | None = " ".join(date_tokens)
         from_file = False
     else:
-        source = read_lastcheck_str()
+        source = read_lastcheck_str(lastcheck_file)
         from_file = True
 
     if source is None:
