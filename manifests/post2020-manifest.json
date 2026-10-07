@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "analysis_script": {
     "location": "s3://gnw-monitoring-data/post2020.py",
     "updatetime": "2026-08-04T00:00:00Z"
@@ -42,10 +42,10 @@
     },
     {
       "name": "int_dist_zarr",
-      "location": "s3://gnw-monitoring-data/zarrs/intdist.date_conf.v20260906.zarr",
+      "location": "s3://gnw-monitoring-data/zarrs/intdist.date_conf.v20261004.zarr",
       "description": "Integrated disturbance alerts (gfw_integrated_dist_alerts/v20260802,\ntesting for high and highest confidence alerts since 2026/1/1)",
-      "updatetime": "2026-09-08T17:44:42Z",
-      "hash": "b73d405556332a01b10bd6dcc479ff46300829cabfab0818b967a0069dfe0d55"
+      "updatetime": "2026-10-07T03:32:42Z",
+      "hash": "4816aedd3712af68e81c0faea2c6e4d592aec2424cec1451e28013745eeee44c"
     },
     {
       "name": "tcl_drivers_zarr",
